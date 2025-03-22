@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-const int MAP_SIZE = 10;
+const int MAP_SIZE = 5;
 struct coordinates
 {
     int x;
@@ -79,16 +79,30 @@ struct Map
         {
             for (int j = 0; j < MAP_SIZE; j++)
             {
-                if (units[i][j] != NULL)
+                if (units[i][j] == NULL)
                 {
-                    cout << "U ";
+                    cout << "_ ";
                 }
                 else
                 {
-                    cout << "- ";
+                    cout << units[i][j]->unitType[0] << " ";
                 }
             }
             cout << endl;
+        }
+    }
+    ~Map()
+    {
+        for (int i = 0; i < MAP_SIZE; i++)
+        {
+            for (int j = 0; j < MAP_SIZE; j++)
+            {
+                if (units[i][j] != nullptr)
+                {
+                    delete units[i][j];
+                    units[i][j] = nullptr;
+                }
+            }
         }
     }
 };
@@ -118,6 +132,7 @@ struct Player
             if (units[i] == unit)
             {
                 delete units[i];
+                units[i] = nullptr;
                 for (int j = i; j < unitCount - 1; j++)
                     units[j] = units[j + 1];
                 unitCount--;
@@ -133,6 +148,7 @@ struct Player
         {
             units[i]->displayInfo();
         }
+        cout << endl;
     }
     ~Player()
     {
@@ -226,6 +242,31 @@ struct Game
 
 int main()
 {
-    cout << "Hello World!" << endl;
+
+    Game game("Player1", "Player2");
+
+    Unit *u1 = new Unit("Soldier", 100, 25, 10, 1, 0, 1);
+    Unit *u2 = new Unit("Soldier", 100, 25, 10, 1, 0, 1);
+    Unit *u3 = new Unit("Soldier", 100, 25, 10, 1, 0, 1);
+    game.players[0]->addUnit(u1);
+    game.players[0]->addUnit(u2);
+    game.players[0]->addUnit(u3);
+
+    Unit *u4 = new Unit("Soldier", 100, 25, 10, 1, 4, 1);
+    Unit *u5 = new Unit("Soldier", 100, 25, 10, 1, 4, 1);
+    Unit *u6 = new Unit("Soldier", 100, 25, 10, 1, 4, 1);
+    game.players[1]->addUnit(u4);
+    game.players[1]->addUnit(u5);
+    game.players[1]->addUnit(u6);
+
+    game.gameMap->addUnitToMap(u1, 0, 1);
+    game.gameMap->addUnitToMap(u2, 0, 2);
+    game.gameMap->addUnitToMap(u3, 0, 3);
+    game.gameMap->addUnitToMap(u4, 4, 1);
+    game.gameMap->addUnitToMap(u5, 4, 2);
+    game.gameMap->addUnitToMap(u6, 4, 3);
+
+    game.gameMap->displayMap();
+
     return 0;
 }
