@@ -113,7 +113,53 @@ struct Player{
     }
 };
 
+struct Game{
+    struct Player* players[2];
+    struct Map* gameMap;
+    int turn;
 
+    Game(string p1, string p2){
+        players[0] =new Player(p1, 0);
+        players[1] =new Player(p2, 0);
+        gameMap = new Map();
+        gameMap->initializeMap();
+        turn = 0;
+    }
+
+    void nextTurn(){
+        turn = 1 - turn;
+    }
+
+    void playerAction(int x, int y, int newX, int newY){
+        struct Unit *unit = gameMap->units[x][y];
+        if(unit == NULL){
+            cout<<"No unit at this position"<<endl;
+            return;
+        }
+        if (unit!=nullptr){
+            gameMap->removeUnitFromMap(x, y);
+            gameMap->addUnitToMap(unit, newX, newY);
+        }
+    }
+
+    bool checkVictory(){
+        if(players[0]->unitCount == 0){
+            cout<<players[1]->playerName<<" wins!"<<endl;
+            return true;
+        }
+        if(players[1]->unitCount == 0){
+            cout<<players[0]->playerName<<" wins!"<<endl;
+            return true;
+        }
+        return false;
+    }
+
+    ~Game(){
+        delete players[0];
+        delete players[1];
+        delete gameMap;
+    }
+};
 
 
 int main(){
