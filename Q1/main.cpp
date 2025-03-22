@@ -1,5 +1,6 @@
 #include<iostream>
 using namespace std;
+const int MAP_SIZE = 10;
 struct coordinates{
     int x;
     int y;
@@ -44,10 +45,10 @@ struct Unit{
 };
 
 struct Map{
-    struct Unit *units[10][10];
+    struct Unit *units[MAP_SIZE][MAP_SIZE];
     void initializeMap(){
-        for(int i=0; i<10; i++){
-            for(int j=0; j<10; j++){
+        for(int i=0; i<MAP_SIZE; i++){
+            for(int j=0; j<MAP_SIZE; j++){
                 units[i][j] = NULL;
             }
         }
@@ -59,8 +60,8 @@ struct Map{
         units[x][y] = NULL;
     }
     void displayMap(){
-        for(int i=0; i<10; i++){
-            for(int j=0; j<10; j++){
+        for(int i=0; i<MAP_SIZE; i++){
+            for(int j=0; j<MAP_SIZE; j++){
                 if(units[i][j] != NULL){
                     cout<<"U ";
                 }
@@ -72,6 +73,49 @@ struct Map{
         }
     }
 };
+struct Player{
+    string playerName;
+    struct Unit* units[10];
+    int unitCount = 0;
+    Player(string name, int count){
+        playerName = name;
+        unitCount = count;
+    }
+
+    void addUnit(Unit* newUnit) {
+        if (unitCount < 10) {
+            units[unitCount++] = newUnit;
+        }
+    }
+
+    void removeUnit(Unit* unit) {
+        for (int i = 0; i < unitCount; i++) {
+            if (units[i] == unit) {
+                delete units[i]; 
+                for (int j = i; j < unitCount - 1; j++)
+                    units[j] = units[j + 1]; 
+                unitCount--;
+                return;
+            }
+        }
+    }
+
+    void displayUnits() {
+        cout<<playerName<<"'s Units:"<<endl;
+        for (int i = 0; i < unitCount; i++) {
+            units[i]->displayInfo();
+        }
+    }
+    ~Player(){
+        for(int i=0; i<unitCount; i++){
+            delete units[i];
+        }
+    }
+};
+
+
+
+
 int main(){
     cout<<"Hello World!"<<endl;
     return 0;
