@@ -33,6 +33,44 @@ struct Unit{
             enemyUnit->health -= damage;
         }
     }
+    void displayInfo(){
+        cout<<"Unit Type: "<<unitType<<endl;
+        cout<<"Health: "<<health<<endl;
+        cout<<"Attack: "<<attack<<endl;
+        cout<<"Defense: "<<defense<<endl;
+        cout<<"Movement Range: "<<movementRange<<endl;
+        cout<<"Position: ("<<position.x<<", "<<position.y<<")"<<endl;
+    }
+};
+
+struct Map{
+    struct Unit *units[10][10];
+    void initializeMap(){
+        for(int i=0; i<10; i++){
+            for(int j=0; j<10; j++){
+                units[i][j] = NULL;
+            }
+        }
+    }
+    void addUnitToMap(Unit* unit, int x, int y){
+        units[x][y] = unit;
+    }
+    void removeUnitFromMap(int x, int y){
+        units[x][y] = NULL;
+    }
+    void displayMap(){
+        for(int i=0; i<10; i++){
+            for(int j=0; j<10; j++){
+                if(units[i][j] != NULL){
+                    cout<<"U ";
+                }
+                else{
+                    cout<<"- ";
+                }
+            }
+            cout<<endl;
+        }
+    }
 };
 int main(){
     cout<<"Hello World!"<<endl;
