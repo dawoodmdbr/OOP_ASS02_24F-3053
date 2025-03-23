@@ -35,9 +35,10 @@ struct Survey
 
 class Admin
 {
-public:
+private:
     Survey *surveys;
     int sCount;
+public:
     Admin()
     {
         surveys = nullptr;
@@ -96,6 +97,12 @@ public:
         survey.qCount++;
         cout << "Question added successfully!" << endl;
     }
+    void removeQuestion(int sIndex){
+
+    }
+    void editQuestion(int sIndex){
+
+    }
     void viewSurveys()
     {
         cout << "Surveys: " << endl;
@@ -106,6 +113,37 @@ public:
     }
 };
 
+class User{
+
+public:
+    void fillSurvey(Survey survey){
+        cout<<"Survery title: "<< survey.title<< endl;
+        for(int i =0;i<survey.qCount;i++){
+            cout<<survey.questions[i].text;
+            if(survey.questions[i].type == MULTIPLE_CHOICE){
+                for(int j=0;j<4;j++){
+                    cout<<i<<". "<<survey.questions->opt[j] << endl;
+                }
+                int ch;
+                cout<<"Enter choice: ";
+                cin>>ch;
+            }
+            else if(survey.questions[i].type = RATING){
+                cout<<"Enter rating(1-5): ";
+                int rating;
+                cin>>rating;
+            }
+            else {
+                string response;
+                cout<<"Enter response: ";
+                getline(cin, response);
+            }
+        }
+        cout<<"Survey submitted!"<<endl;
+    }
+
+
+};
 int main()
 {
     cout << "hello world";
