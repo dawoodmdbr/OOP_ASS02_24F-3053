@@ -18,6 +18,8 @@ struct Question
     Question() : text(""), type(TEXT) {}
 };
 
+
+
 struct Survey
 {
     string title;
