@@ -67,7 +67,7 @@ public:
 
     void addQuestion(int sIndex)
     {
-        if (sIndex < 0 || sIndex >= sCount)
+        if(sIndex < 0 || sIndex >= sCount)
         {
             cout << "Invalid survey index" << endl;
             return;
@@ -86,17 +86,17 @@ public:
         cin.ignore();
         getline(cin, survey.questions[survey.qCount].text);
 
-        cout << "Select question type:" << endl;
-        cout << "0: Multiple choice" << endl;
-        cout << "1: Text input" << endl;
-        cout << "2: Rating" << endl;
+        cout << "\nSelect question type:" << endl;
+        cout << "1: Multiple choice" << endl;
+        cout << "2: Text input" << endl;
+        cout << "3: Rating" << endl;
         cout << "Option: ";
         int qType;
         cin >> qType;
 
         survey.questions[survey.qCount].type = static_cast<QuestionType>(qType);
 
-        if (qType == MULTIPLE_CHOICE)
+        if (qType-1 == MULTIPLE_CHOICE)
         {
             cout << "Enter 4 options:" << endl;
             cin.ignore();
@@ -116,8 +116,14 @@ public:
         cout << "Available Surveys: " << endl;
         for (int i = 0; i < sCount; i++)
         {
-            cout << "[" << i << "] " << surveys[i].title << " (" << surveys[i].qCount << " questions)" << endl;
+            cout << "Survey ID: " << i+1 << ", Title: " << surveys[i].title << " (" << surveys[i].qCount << " questions)" << endl;
+            for (int j = 0; j < surveys[i].qCount; j++)
+            {
+                cout << "Q" << j + 1 << ": " << surveys[i].questions[j].text << endl;
+            }
+            cout<< endl;
         }
+
     }
 
     Survey *getSurvey(int index)
@@ -142,7 +148,7 @@ public:
             return;
         }
 
-        cout << "Survey Title: " << survey->title << endl;
+        cout << "\nSurvey Title: " << survey->title << endl;
 
         for (int i = 0; i < survey->qCount; i++)
         {
@@ -181,6 +187,7 @@ int main()
     Admin admin;
     User user;
     int ch;
+    int sIndex;
     while(1){
         cout<<"1. Admin"<<endl
         <<"2. User"<<endl
@@ -188,11 +195,10 @@ int main()
         <<"Enter choice: ";
         cin>>ch;
         switch(ch){
-            int sIndex;
             case 1:
                 while (1)
                 {
-                    cout<<"1. Create survey"<<endl
+                    cout<<"\n1. Create survey"<<endl
                         <<"2. Add question"<<endl
                         <<"3. View survey"<<endl
                         <<"4. Exit"<<endl
@@ -200,9 +206,9 @@ int main()
                     cin >> ch;
                     if(ch==1) admin.createSurvey();
                     else if(ch==2){
-                        cout << "Enter survey index: ";
+                        cout << "Enter survey ID: ";
                         cin >> sIndex;
-                        admin.addQuestion(sIndex);
+                        admin.addQuestion(sIndex-1);
                     } 
                     else if(ch==3) admin.viewSurveys();
                     else if(ch == 4) break;
@@ -217,9 +223,9 @@ int main()
                     cin>>ch;
                     if(ch==1){
                         admin.viewSurveys();
-                        cout << "Enter survey index to fill: ";
+                        cout << "Enter survey ID to fill: ";
                         cin >> sIndex;
-                        user.fillSurvey(admin.getSurvey(sIndex));
+                        user.fillSurvey(admin.getSurvey(sIndex-1));
                     } else if(ch==2) break;
                     else cout<<"Invalid choice. Try again."<<endl;
                 }
